@@ -1,14 +1,66 @@
-import 'package:dio/dio.dart';
-import 'package:retrofit/retrofit.dart';
-import 'package:riverpod_demo/data/model/todo_model.dart';
+import 'package:riverpod_demo/data/data.dart';
+import 'package:riverpod_demo/data/remote/remote.dart';
 
-part 'todo_remote_data_source.g.dart';
-
-@RestApi()
 abstract class TodoRemoteDataSource {
-  factory TodoRemoteDataSource(Dio dio, {String baseUrl}) =
-      _TodoRemoteDataSource;
-
-  @GET("todos")
   Future<List<TodoModel>> getTodoList();
+
+  Future<TodoModel> getTodoById({required int id});
+
+  Future<TodoModel> createTodo({required TodoModel todo});
+
+  Future<TodoModel> updateTodo({required int id, required TodoModel todo});
+
+  Future<void> deleteTodo({required int id});
+}
+
+class TodoRemoteDataSourceImpl extends TodoRemoteDataSource {
+  final TodoRemoteClient todoRemoteClient;
+
+  TodoRemoteDataSourceImpl({required this.todoRemoteClient});
+
+  @override
+  Future<List<TodoModel>> getTodoList() async {
+    try {
+      return await todoRemoteClient.getTodoList();
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  @override
+  Future<TodoModel> createTodo({required TodoModel todo}) async {
+    try {
+      return await todoRemoteClient.createTodo(todo);
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  @override
+  Future<void> deleteTodo({required int id}) async {
+    try {
+      await todoRemoteClient.deleteTodo(id);
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  @override
+  Future<TodoModel> getTodoById({required int id}) async {
+    try {
+      return await todoRemoteClient.getTodoById(id);
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  @override
+  Future<TodoModel> updateTodo(
+      {required int id, required TodoModel todo}) async {
+    try {
+      return await todoRemoteClient.updateTodo(id, todo);
+    } catch (e) {
+      rethrow;
+    }
+  }
 }

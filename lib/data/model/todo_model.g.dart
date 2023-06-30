@@ -7,15 +7,15 @@ part of 'todo_model.dart';
 // **************************************************************************
 
 TodoModel _$TodoModelFromJson(Map<String, dynamic> json) => TodoModel(
-      userId: json['userId'] as String,
-      id: json['id'] as String,
+      userId: json['userId'] as int,
+      id: json['id'] as int,
       title: json['title'] as String,
-      compeleted: json['compeleted'] as bool,
+      completed: json['completed'] as bool,
     );
 
 Map<String, dynamic> _$TodoModelToJson(TodoModel instance) => <String, dynamic>{
       'userId': instance.userId,
       'id': instance.id,
       'title': instance.title,
-      'compeleted': instance.compeleted,
+      'completed': instance.completed,
     };

@@ -1,8 +1,8 @@
 import 'package:equatable/equatable.dart';
 
 class TodoEntity extends Equatable {
-  final String userId;
-  final String id;
+  final int userId;
+  final int id;
   final String title;
   final bool completed;
 
