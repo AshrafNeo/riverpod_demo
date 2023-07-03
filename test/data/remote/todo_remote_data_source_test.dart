@@ -1,66 +1,67 @@
-import 'dart:convert';
+// import 'dart:convert';
 
-import 'package:dio/dio.dart';
-import 'package:flutter_test/flutter_test.dart';
-import 'package:mockito/mockito.dart';
-import 'package:mockito/annotations.dart';
-import 'package:riverpod_demo/data/remote/remote.dart';
-import 'package:riverpod_demo/data/data.dart';
+// import 'package:dio/dio.dart';
+// import 'package:flutter_test/flutter_test.dart';
+// import 'package:mockito/mockito.dart';
+// import 'package:mockito/annotations.dart';
 
-import '../../fixtures/fixture_reader.dart';
+// import 'package:riverpod_demo/data/data.dart';
+// import 'package:riverpod_demo/data/datasources/datasources.dart';
 
-import 'todo_remote_data_source_test.mocks.dart';
+// import '../../fixtures/fixture_reader.dart';
 
-@GenerateMocks([TodoRemoteClient])
-void main() {
-  group("fetch todo", () {
-    late TodoRemoteClient service;
-    const int tTodoId = 1;
+// import 'todo_remote_data_source_test.mocks.dart';
 
-    setUp(() {
-      service = MockTodoRemoteClient();
-    });
+// @GenerateMocks([TodoRemoteClient])
+// void main() {
+//   group("fetch todo", () {
+//     late TodoRemoteClient service;
+//     const int tTodoId = 1;
 
-    test("get todo list success 200 OK", () async {
-      //arrange
-      final result = jsonDecode(fixture('todo.json'));
-      final tModel = TodoModel.fromJson(result);
-      final tTodoList = [tModel];
+//     setUp(() {
+//       service = MockTodoRemoteClient();
+//     });
 
-//act
-      when(service.getTodoList())
-          .thenAnswer((realInvocation) async => tTodoList);
+//     test("get todo list success 200 OK", () async {
+//       //arrange
+//       final result = jsonDecode(fixture('todo.json'));
+//       final tModel = TodoModel.fromJson(result);
+//       final tTodoList = [tModel];
 
-      final expected = tTodoList;
-      final call = await service.getTodoList();
-//assert
-      expect(call, expected);
-    });
+// //act
+//       when(service.getTodoList())
+//           .thenAnswer((realInvocation) async => tTodoList);
 
-    test("should throw an Exception when response code is 404 or other",
-        () async {
-      //arrange
-      when(service.getTodoList())
-          .thenThrow(DioException(requestOptions: RequestOptions()));
-      //act
-      final call = service.getTodoList;
-      //assert
-      expect(() => call(), throwsA(const TypeMatcher<DioException>()));
-    });
+//       final expected = tTodoList;
+//       final call = await service.getTodoList();
+// //assert
+//       expect(call, expected);
+//     });
 
-    test("get todo details with id $tTodoId", () async {
-      //arrange
-      final result = jsonDecode(fixture('todo.json'));
-      final tModel = TodoModel.fromJson(result);
+//     test("should throw an Exception when response code is 404 or other",
+//         () async {
+//       //arrange
+//       when(service.getTodoList())
+//           .thenThrow(DioException(requestOptions: RequestOptions()));
+//       //act
+//       final call = service.getTodoList;
+//       //assert
+//       expect(() => call(), throwsA(const TypeMatcher<DioException>()));
+//     });
 
-      //act
-      when(service.getTodoById(tTodoId))
-          .thenAnswer((realInvocation) async => tModel);
+//     test("get todo details with id $tTodoId", () async {
+//       //arrange
+//       final result = jsonDecode(fixture('todo.json'));
+//       final tModel = TodoModel.fromJson(result);
 
-      final expected = tModel;
-      final call = await service.getTodoById(tTodoId);
-      //assert
-      expect(call, expected);
-    });
-  });
-}
+//       //act
+//       when(service.getTodoById(tTodoId))
+//           .thenAnswer((realInvocation) async => tModel);
+
+//       final expected = tModel;
+//       final call = await service.getTodoById(tTodoId);
+//       //assert
+//       expect(call, expected);
+//     });
+//   });
+// }

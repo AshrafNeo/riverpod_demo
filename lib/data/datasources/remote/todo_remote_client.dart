@@ -9,7 +9,8 @@ abstract class TodoRemoteClient {
   factory TodoRemoteClient(Dio dio, {String baseUrl}) = _TodoRemoteClient;
 
   @GET("todos")
-  Future<List<TodoModel>> getTodoList();
+  Future<List<TodoModel>> getTodoList(
+      @Query("_start") int start, @Query('_limit') int limit);
 
   @GET("/todos/{id}")
   Future<TodoModel> getTodoById(@Path("id") int id);

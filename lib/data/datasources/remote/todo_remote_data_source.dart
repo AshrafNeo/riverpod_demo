@@ -1,8 +1,9 @@
 import 'package:riverpod_demo/data/data.dart';
-import 'package:riverpod_demo/data/remote/remote.dart';
+
+import 'todo_remote_client.dart';
 
 abstract class TodoRemoteDataSource {
-  Future<List<TodoModel>> getTodoList();
+  Future<List<TodoModel>> getTodoList({int start = 0, required int limit});
 
   Future<TodoModel> getTodoById({required int id});
 
@@ -17,15 +18,6 @@ class TodoRemoteDataSourceImpl extends TodoRemoteDataSource {
   final TodoRemoteClient todoRemoteClient;
 
   TodoRemoteDataSourceImpl({required this.todoRemoteClient});
-
-  @override
-  Future<List<TodoModel>> getTodoList() async {
-    try {
-      return await todoRemoteClient.getTodoList();
-    } catch (e) {
-      rethrow;
-    }
-  }
 
   @override
   Future<TodoModel> createTodo({required TodoModel todo}) async {
@@ -59,6 +51,16 @@ class TodoRemoteDataSourceImpl extends TodoRemoteDataSource {
       {required int id, required TodoModel todo}) async {
     try {
       return await todoRemoteClient.updateTodo(id, todo);
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  @override
+  Future<List<TodoModel>> getTodoList(
+      {int start = 0, required int limit}) async {
+    try {
+      return await todoRemoteClient.getTodoList(start, limit);
     } catch (e) {
       rethrow;
     }

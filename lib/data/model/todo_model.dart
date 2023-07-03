@@ -28,7 +28,7 @@ class TodoModel extends TodoEntity {
 
   factory TodoModel.fromEntity(TodoEntity entity) => TodoModel(
         userId: entity.userId,
-        id: entity.id,
+        id: entity.id!,
         title: entity.title,
         completed: entity.completed,
       );

@@ -7,7 +7,8 @@ import 'dart:async' as _i4;
 
 import 'package:mockito/mockito.dart' as _i1;
 import 'package:riverpod_demo/data/data.dart' as _i2;
-import 'package:riverpod_demo/data/remote/todo_remote_client.dart' as _i3;
+import 'package:riverpod_demo/data/datasources/remote/todo_remote_client.dart'
+    as _i3;
 
 // ignore_for_file: type=lint
 // ignore_for_file: avoid_redundant_argument_values
@@ -39,10 +40,17 @@ class MockTodoRemoteClient extends _i1.Mock implements _i3.TodoRemoteClient {
   }
 
   @override
-  _i4.Future<List<_i2.TodoModel>> getTodoList() => (super.noSuchMethod(
+  _i4.Future<List<_i2.TodoModel>> getTodoList(
+    int? start,
+    int? limit,
+  ) =>
+      (super.noSuchMethod(
         Invocation.method(
           #getTodoList,
-          [],
+          [
+            start,
+            limit,
+          ],
         ),
         returnValue: _i4.Future<List<_i2.TodoModel>>.value(<_i2.TodoModel>[]),
       ) as _i4.Future<List<_i2.TodoModel>>);

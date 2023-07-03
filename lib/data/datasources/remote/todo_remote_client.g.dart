@@ -19,9 +19,15 @@ class _TodoRemoteClient implements TodoRemoteClient {
   String? baseUrl;
 
   @override
-  Future<List<TodoModel>> getTodoList() async {
+  Future<List<TodoModel>> getTodoList(
+    int start,
+    int limit,
+  ) async {
     const _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{
+      r'_start': start,
+      r'_limit': limit,
+    };
     final _headers = <String, dynamic>{};
     final Map<String, dynamic>? _data = null;
     final _result =

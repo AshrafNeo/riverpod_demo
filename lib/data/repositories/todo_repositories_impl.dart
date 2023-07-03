@@ -1,7 +1,7 @@
 import 'package:dartz/dartz.dart';
 import 'package:riverpod_demo/data/data.dart';
+import 'package:riverpod_demo/data/datasources/remote/remote.dart';
 
-import 'package:riverpod_demo/data/remote/todo_remote_data_source.dart';
 import 'package:riverpod_demo/domain/domain.dart';
 
 class TodoRepositoriesImpl extends TodoRepositories {
@@ -10,7 +10,9 @@ class TodoRepositoriesImpl extends TodoRepositories {
   TodoRepositoriesImpl({required this.todoRemoteDataSource});
 
   @override
-  Future<Either<Exception, List<TodoEntity>>> getTodoList() => _getTodoList();
+  Future<Either<Exception, List<TodoEntity>>> getTodoList(
+          {required int limit}) =>
+      _getTodoList(limit);
 
   @override
   Future<Either<Exception, TodoEntity>> getTodoById({required int id}) =>
@@ -30,9 +32,9 @@ class TodoRepositoriesImpl extends TodoRepositories {
           {required int id, required TodoEntity todoEntity}) =>
       _updateTodo(id: id, todoEntity: todoEntity);
 
-  Future<Either<Exception, List<TodoEntity>>> _getTodoList() async {
+  Future<Either<Exception, List<TodoEntity>>> _getTodoList(int limit) async {
     try {
-      final todoResult = await todoRemoteDataSource.getTodoList();
+      final todoResult = await todoRemoteDataSource.getTodoList(limit: limit);
       return Right(todoResult);
     } catch (e) {
       return Left(Exception(e.toString()));
