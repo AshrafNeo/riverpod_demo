@@ -21,7 +21,7 @@ class TodoNotifier extends StateNotifier<TodoState> {
               : TodoConcreteState.loading,
           isLoading: true);
 
-      final response = await todoListUsecase(params: Params(limit: state.page));
+      final response = await todoListUsecase(params: Params(page: state.page));
 
       response.fold(
         (failure) {
@@ -46,6 +46,6 @@ class TodoNotifier extends StateNotifier<TodoState> {
           );
         },
       );
-    } else {}
+    }
   }
 }

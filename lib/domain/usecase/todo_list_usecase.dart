@@ -9,14 +9,14 @@ class TodoListUsecase extends UseCase<List<TodoEntity>, Params> {
 
   @override
   Future<Either<Exception, List<TodoEntity>>> call({required Params params}) {
-    return todoRepositories.getTodoList(limit: params.limit);
+    return todoRepositories.getTodoList(page: params.page);
   }
 }
 
 class NoParams {}
 
 class Params {
-  final int limit;
+  final int page;
 
-  Params({required this.limit});
+  Params({required this.page});
 }

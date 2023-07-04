@@ -11,8 +11,8 @@ class TodoRepositoriesImpl extends TodoRepositories {
 
   @override
   Future<Either<Exception, List<TodoEntity>>> getTodoList(
-          {required int limit}) =>
-      _getTodoList(limit);
+          {required int page}) =>
+      _getTodoList(page);
 
   @override
   Future<Either<Exception, TodoEntity>> getTodoById({required int id}) =>
@@ -32,9 +32,9 @@ class TodoRepositoriesImpl extends TodoRepositories {
           {required int id, required TodoEntity todoEntity}) =>
       _updateTodo(id: id, todoEntity: todoEntity);
 
-  Future<Either<Exception, List<TodoEntity>>> _getTodoList(int limit) async {
+  Future<Either<Exception, List<TodoEntity>>> _getTodoList(int page) async {
     try {
-      final todoResult = await todoRemoteDataSource.getTodoList(limit: limit);
+      final todoResult = await todoRemoteDataSource.getTodoList(page: page);
       return Right(todoResult);
     } catch (e) {
       return Left(Exception(e.toString()));
