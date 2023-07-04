@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_demo/presentation/notifiers/providers.dart';
 import 'package:riverpod_demo/presentation/notifiers/state/todo_state.dart';
+import 'package:riverpod_demo/presentation/pages/todos/todos_details.dart';
 
 class TodoScreen extends ConsumerStatefulWidget {
   const TodoScreen({super.key});
@@ -49,6 +50,12 @@ class _TodoScreenState extends ConsumerState<TodoScreen> {
                           itemBuilder: (context, index) {
                             final todo = state.todoList[index];
                             return ListTile(
+                              onTap: () {
+                                Navigator.of(context).push(MaterialPageRoute(
+                                    builder: (context) => TodoDetails(
+                                          id: todo.id!,
+                                        )));
+                              },
                               leading: const CircleAvatar(),
                               title: Text(
                                 todo.title,

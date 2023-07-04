@@ -1,19 +1,24 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:riverpod_demo/domain/usecase/provider/providers.dart';
+import 'package:riverpod_demo/presentation/notifiers/state/todo_detail_notifiers.dart';
 import 'package:riverpod_demo/presentation/notifiers/state/todo_state.dart';
 
+import 'state/todo_details_state.dart';
 import 'state/todo_notifiers.dart';
 
 final todosProvider =
-    StateNotifierProvider.autoDispose<TodoNotifier, TodoState>((ref) {
+    StateNotifierProvider.autoDispose<TodoNotifier, TodoState>(
+        name: 'TODOS PROVIDER', (ref) {
   final usecase = ref.read(todoUsecaseProvider);
   return TodoNotifier(todoListUsecase: usecase)..getTodoList();
 });
 
-// final todosDetailProvider = FutureProvider.autoDispose.family(
-//   (ref, int id) {
-//     final usecase = ref.read(getTodoDetails);
-//     return 
-//   },
-// );
+final todosDetailProvider = StateNotifierProvider.autoDispose
+    .family<TodoNotifierDetails, TodoDetailState, int>(
+  name: 'TODO DETAILS PROVIDER',
+  (ref, int id) {
+    final usecase = ref.read(getTodoDetails);
+    return TodoNotifierDetails(getTodoDetail: usecase)..getTodoDetails(id: id);
+  },
+);
