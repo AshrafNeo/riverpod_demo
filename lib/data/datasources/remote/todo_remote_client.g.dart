@@ -67,7 +67,7 @@ class _TodoRemoteClient implements TodoRemoteClient {
     )
             .compose(
               _dio.options,
-              '/todos/${id}',
+              'todos/${id}',
               queryParameters: queryParameters,
               data: _data,
             )
@@ -95,7 +95,7 @@ class _TodoRemoteClient implements TodoRemoteClient {
     )
             .compose(
               _dio.options,
-              '/todos',
+              'todos',
               queryParameters: queryParameters,
               data: _data,
             )
@@ -126,7 +126,7 @@ class _TodoRemoteClient implements TodoRemoteClient {
     )
             .compose(
               _dio.options,
-              '/todos/${id}',
+              'todos/${id}',
               queryParameters: queryParameters,
               data: _data,
             )
@@ -152,7 +152,7 @@ class _TodoRemoteClient implements TodoRemoteClient {
     )
         .compose(
           _dio.options,
-          '/todos/${id}',
+          'todos/${id}',
           queryParameters: queryParameters,
           data: _data,
         )

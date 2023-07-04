@@ -12,19 +12,19 @@ abstract class TodoRemoteClient {
   Future<List<TodoModel>> getTodoList(
       @Query("_page") int id, @Query("_limit") int limit);
 
-  @GET("/todos/{id}")
+  @GET("todos/{id}")
   Future<TodoModel> getTodoById(@Path("id") int id);
 
-  @POST("/todos")
+  @POST("todos")
   Future<TodoModel> createTodo(@Body() TodoModel todo);
 
-  @PUT("/todos/{id}")
+  @PUT("todos/{id}")
   Future<TodoModel> updateTodo(
     @Path("id") int id,
     @Body() TodoModel todo,
   );
 
-  @DELETE("/todos/{id}")
+  @DELETE("todos/{id}")
   Future<void> deleteTodo(
     @Path("id") int id,
   );
