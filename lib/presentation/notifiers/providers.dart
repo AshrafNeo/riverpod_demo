@@ -11,7 +11,13 @@ final todosProvider =
     StateNotifierProvider.autoDispose<TodoNotifier, TodoState>(
         name: 'TODOS PROVIDER', (ref) {
   final usecase = ref.read(todoUsecaseProvider);
-  return TodoNotifier(todoListUsecase: usecase)..getTodoList();
+  final deleteUsecase = ref.read(deleteTodoUsecaseProvider);
+  final updateUsecase = ref.read(updateTodoUseCaseProvider);
+  return TodoNotifier(
+      todoListUsecase: usecase,
+      deleteTodoUsecase: deleteUsecase,
+      updateTodoUseCase: updateUsecase)
+    ..getTodoList();
 });
 
 final todosDetailProvider = StateNotifierProvider.autoDispose

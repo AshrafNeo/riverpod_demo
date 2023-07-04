@@ -1,4 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:riverpod_demo/domain/domain.dart';
 import 'package:riverpod_demo/domain/usecase/get_todo_details_usecase.dart';
 import 'package:riverpod_demo/presentation/notifiers/state/todo_details_state.dart';
 
@@ -18,5 +19,9 @@ class TodoNotifierDetails extends StateNotifier<TodoDetailState> {
 
   void resetState() {
     state = TodoDetailInitial();
+  }
+
+  void setCompleted(bool newCompleted, TodoEntity todoEntity) {
+    state = TodoLoaded(todoEntity.setCompleted(newCompleted));
   }
 }

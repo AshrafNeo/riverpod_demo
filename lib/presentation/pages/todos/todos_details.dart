@@ -6,11 +6,36 @@ import 'package:riverpod_demo/presentation/notifiers/state/todo_details_state.da
 
 class TodoDetails extends ConsumerWidget {
   final int id;
-  const TodoDetails({required this.id, super.key});
+
+  TodoDetails({
+    required this.id,
+    super.key,
+  });
+
+  final MaterialStateProperty<Icon?> thumbIcon =
+      MaterialStateProperty.resolveWith<Icon?>(
+    (Set<MaterialState> states) {
+      if (states.contains(MaterialState.selected)) {
+        return const Icon(Icons.check);
+      }
+      return const Icon(Icons.close);
+    },
+  );
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final state = ref.watch(todosDetailProvider(id));
+
+    ref.listen(
+      todosDetailProvider(id),
+      (prev, next) {
+        if (next is TodoLoaded) {
+          ref
+              .read(todosProvider.notifier)
+              .toggleTodoComplete(id, next.todoEntity.completed);
+        }
+      },
+    );
 
     return Scaffold(
       body: Column(
@@ -26,7 +51,15 @@ class TodoDetails extends ConsumerWidget {
                 children: [
                   Text("${state.todoEntity.id}"),
                   Text(state.todoEntity.title),
-                  Text("${state.todoEntity.completed}"),
+                  Switch(
+                      thumbIcon: thumbIcon,
+                      value: state.todoEntity.completed,
+                      onChanged: (value) {
+                        ref
+                            .read(todosDetailProvider(id).notifier)
+                            .setCompleted(value, state.todoEntity);
+                      }),
+                  // Text("${state.todoEntity.completed}"),
                 ],
               ),
             ),

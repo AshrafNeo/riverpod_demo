@@ -1,13 +1,22 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:riverpod_demo/domain/domain.dart';
+import 'package:riverpod_demo/domain/usecase/delete_usecase.dart';
+import 'package:riverpod_demo/domain/usecase/update_usecase.dart';
 import 'package:riverpod_demo/presentation/notifiers/state/todo_state.dart';
 
 class TodoNotifier extends StateNotifier<TodoState> {
   final TodoListUsecase todoListUsecase;
+  final DeleteTodoUsecase _deleteTodoUsecase;
+  final UpdateTodoUseCase _updateTodoUseCase;
 
-  TodoNotifier({required this.todoListUsecase})
-      : super(const TodoState.initial());
+  TodoNotifier(
+      {required this.todoListUsecase,
+      required DeleteTodoUsecase deleteTodoUsecase,
+      required UpdateTodoUseCase updateTodoUseCase})
+      : _deleteTodoUsecase = deleteTodoUsecase,
+        _updateTodoUseCase = updateTodoUseCase,
+        super(const TodoState.initial());
 
   bool get isFetching =>
       state.state != TodoConcreteState.loading &&
@@ -47,5 +56,37 @@ class TodoNotifier extends StateNotifier<TodoState> {
         },
       );
     }
+  }
+
+  Future<void> deleteTodo(int id) async {
+    final result = await _deleteTodoUsecase(params: DeleteParams(id));
+    result.fold(
+      (l) {},
+      (r) {
+        state.todoList.removeWhere((element) => element.id == id);
+        state = state.copyWith(
+            isLoading: false,
+            todoList: state.todoList,
+            state: TodoConcreteState.loaded,
+            hasData: true,
+            total: state.todoList.length,
+            page: state.todoList.length ~/ 10,
+            message: "Deleted Successfully");
+        state = state.copyWith(message: '');
+      },
+    );
+  }
+
+  toggleTodoComplete(int id, bool value) async {
+    final index = state.todoList.indexWhere((element) => element.id == id);
+    // state.todoList[index] = state.todoList[index].setCompleted(value);
+    // state = state.copyWith();
+    final result = await _updateTodoUseCase(
+        params: UpdateParams(id, state.todoList[index].setCompleted(value)));
+
+    result.fold((l) => {}, (todo) {
+      state.todoList[index] = todo;
+      state = state.copyWith();
+    });
   }
 }

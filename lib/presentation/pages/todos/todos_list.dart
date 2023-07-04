@@ -27,9 +27,26 @@ class _TodoScreenState extends ConsumerState<TodoScreen> {
     }
   }
 
+  final MaterialStateProperty<Icon?> thumbIcon =
+      MaterialStateProperty.resolveWith<Icon?>(
+    (Set<MaterialState> states) {
+      if (states.contains(MaterialState.selected)) {
+        return const Icon(Icons.check);
+      }
+      return const Icon(Icons.close);
+    },
+  );
+
   @override
   Widget build(BuildContext context) {
     final state = ref.watch(todosProvider);
+
+    ref.listen(todosProvider.select((value) => value.message), (prev, next) {
+      if (next == 'Deleted Successfully') {
+        ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(backgroundColor: Colors.green, content: Text(next)));
+      }
+    });
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
@@ -49,27 +66,44 @@ class _TodoScreenState extends ConsumerState<TodoScreen> {
                           itemCount: state.todoList.length,
                           itemBuilder: (context, index) {
                             final todo = state.todoList[index];
-                            return ListTile(
-                              onTap: () {
-                                Navigator.of(context).push(MaterialPageRoute(
-                                    builder: (context) => TodoDetails(
-                                          id: todo.id!,
-                                        )));
+                            return Dismissible(
+                              direction: DismissDirection.endToStart,
+                              background: Container(color: Colors.red),
+                              key: Key("${todo.id}"),
+                              onDismissed: (direction) {
+                                ref
+                                    .read(todosProvider.notifier)
+                                    .deleteTodo(todo.id!);
                               },
-                              leading: const CircleAvatar(),
-                              title: Text(
-                                todo.title,
-                                style: Theme.of(context).textTheme.bodyLarge,
-                              ),
-                              trailing: Text(
-                                '${todo.completed}',
-                                style: Theme.of(context).textTheme.bodyMedium,
-                              ),
-                              subtitle: Text(
-                                todo.title,
-                                style: Theme.of(context).textTheme.bodyMedium,
-                                maxLines: 1,
-                                overflow: TextOverflow.ellipsis,
+                              child: ListTile(
+                                onTap: () {
+                                  Navigator.of(context).push(
+                                    MaterialPageRoute(
+                                      builder: (context) => TodoDetails(
+                                        id: todo.id!,
+                                      ),
+                                    ),
+                                  );
+                                },
+                                leading: const CircleAvatar(),
+                                title: Text(
+                                  todo.title,
+                                  style: Theme.of(context).textTheme.bodyLarge,
+                                ),
+                                trailing: Switch(
+                                    thumbIcon: thumbIcon,
+                                    value: todo.completed,
+                                    onChanged: (value) {
+                                      ref
+                                          .read(todosProvider.notifier)
+                                          .toggleTodoComplete(todo.id!, value);
+                                    }),
+                                subtitle: Text(
+                                  todo.title,
+                                  style: Theme.of(context).textTheme.bodyMedium,
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
                               ),
                             );
                           },
@@ -96,6 +130,8 @@ class _TodoScreenState extends ConsumerState<TodoScreen> {
                     ),
                   ),
                 ),
+      floatingActionButton:
+          FloatingActionButton(onPressed: () {}, child: const Icon(Icons.add)),
     );
   }
 }

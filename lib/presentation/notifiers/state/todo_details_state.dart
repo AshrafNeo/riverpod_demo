@@ -59,3 +59,12 @@ class TodoError extends TodoDetailState {
     );
   }
 }
+
+class TodoSwicth extends TodoDetailState {
+  final bool completed;
+
+  const TodoSwicth({required this.completed});
+
+  @override
+  List<Object> get props => [completed];
+}
