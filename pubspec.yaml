@@ -67,6 +67,9 @@ dev_dependencies:
 # following page: https://dart.dev/tools/pub/pubspec
 
 # The following section is specific to Flutter packages.
+scripts:
+  generate_files: dart run build_runner build --delete-conflicting-outputs
+
 flutter:
 
   # The following line ensures that the Material Icons font is
